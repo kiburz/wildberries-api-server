@@ -1,0 +1,6 @@
+# Project exclude paths
+/bin/www.js
+/node_modules/
+/routes/index.js
+/app.js
+*.js

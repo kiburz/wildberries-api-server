@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Панель управления WB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<script>
+    function changeDataUpdateTime () {
+        const timeData = document.getElementById("timeDataInput").value
+        const timeType = document.getElementById("timeTypeSelector").value
+
+        const requestOptions = {
+            method: 'POST',
+            redirect: 'follow'
+        };
+
+        fetch(`http://localhost:3000/config?timeData=${timeData}&timeType=${timeType}`, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.error('error', error));
+    }
+</script>
+
+<style>
+    html, body {
+        height: 100%;
+    }
+
+    html {
+        display: table;
+        margin: auto;
+    }
+
+    body {
+        display: table-cell;
+        vertical-align: middle;
+    }
+</style>
+
+<body>
+<h3>Изменение частоты обновления данных</h3>
+<form>
+        <div class="mb-3">
+            <label for="timeDataInput" class="form-label">Сколько раз обновлять</label>
+            <input type="number" id="timeDataInput" class="form-control" value="1" required>
+        </div>
+        <div class="mb-3">
+            <label for="timeTypeSelector" class="form-label">За какой промежуток времени</label>
+            <select class="form-select" id="timeTypeSelector">
+                <option value="month">Месяц</option>
+                <option value="day">День</option>
+                <option value="hour">Час</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="return changeDataUpdateTime()">Обновить конфигурацию</button>
+        <button type="button" class="btn btn-secondary">Перейти на страницу уплавления пользователями</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>
