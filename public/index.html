@@ -12,9 +12,13 @@
         const timeData = document.getElementById("timeDataInput").value
         const timeType = document.getElementById("timeTypeSelector").value
 
+        const myHeaders = new Headers();
+        myHeaders.append("Access-Control-Allow-Private-Network", "true");
+
         const requestOptions = {
             method: 'POST',
-            redirect: 'follow'
+            redirect: 'follow',
+            headers: myHeaders
         };
 
         fetch(`http://localhost:3000/config?timeData=${timeData}&timeType=${timeType}`, requestOptions)

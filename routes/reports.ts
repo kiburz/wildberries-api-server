@@ -56,6 +56,9 @@ router.post('/', async (req, res, next) => {
     {
         'method': 'GET',
         'url': `https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key=${req.query.api_key}&dateFrom=2020-06-01&dateTo=${normalDate}&limit=100000&rrdid=0`,
+        'headers': {
+            'Access-Control-Allow-Private-Network': 'true'
+        }
     }) as any
 
     const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`api_key\` = '${req.query.api_key}'`) as any
