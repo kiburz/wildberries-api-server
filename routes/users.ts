@@ -19,7 +19,9 @@ async function DBRequest(request: string): Promise<string | void> {
 }
 
 function SendError(res: any, ErrorMessage: string): void {
-
+    res.send({
+        error: ErrorMessage
+    })
 }
 
 router.get('/', async (req, res, next) => {
