@@ -6,6 +6,7 @@ import logger from 'morgan';
 const indexRouter = require('./routes');
 const configRouter = require('./routes/config');
 const usersRouter = require('./routes/users');
+const reportsRouter = require('./routes/users');
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.set('view engine', 'ejs');
 app.use('/', indexRouter);
 app.use('/config', configRouter);
 app.use('/users', usersRouter)
+app.use('/reports', reportsRouter)
 
 module.exports = app;
