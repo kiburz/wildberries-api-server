@@ -45,6 +45,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
+    await DBRequest("TRUNCATE TABLE `reports`")
     if (!req.query.api_key) {
         SendError(res,"Введите корректный api_key")
         return;
@@ -64,7 +65,6 @@ router.post('/', async (req, res, next) => {
     }
 
     const cluster = JSON.parse(response as string)[0]
-    await DBRequest("TRUNCATE TABLE `reports`")
     for (let x = 0; x < cluster.length; x++) {
         await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[x].userid}, '${JSON.stringify(cluster)}')`)
     }
