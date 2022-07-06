@@ -6,7 +6,7 @@ import logger from 'morgan';
 const indexRouter = require('./routes');
 const configRouter = require('./routes/config');
 const usersRouter = require('./routes/users');
-const reportsRouter = require('./routes/users');
+const reportsRouter = require('./routes/reports');
 
 const app = express();
 
