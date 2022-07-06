@@ -24,8 +24,25 @@ function SendError(res: any, ErrorMessage: string): void {
     })
 }
 
+function SendNotification(res: any, NotificationMessage: string): void {
+    res.send({
+        notification: NotificationMessage
+    })
+}
+
 router.get('/', async (req, res, next) => {
     res.send(await DBRequest("SELECT * FROM `users`"));
+});
+
+router.post('/', async (req, res, next) => {
+    if (!req.query.name || !req.query.api_key) {
+        SendError(res, "Введите корректный username и api_key")
+        return;
+    }
+
+    await DBRequest(`INSERT INTO \`users\` (\`name\`, \`api_key\`) VALUES ('${req.query.name}', '${req.query.api_key}')`).then(() => {
+        SendNotification(res, "Пользователь создан")
+    });
 });
 
 router.delete('/', async (req, res, next) => {
@@ -34,13 +51,46 @@ router.delete('/', async (req, res, next) => {
         return;
     }
 
-    // const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)})
     const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
     if (users.length === 0) {
         SendError(res, "Такого пользователя не существует.")
         return;
     }
-    await DBRequest(`DELETE FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`);
+    await DBRequest(`DELETE FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`).then(() => {
+        SendNotification(res, "Пользователь удален")
+    });
+});
+
+router.lock('/', async (req, res, next) => {
+    if (!req.query.userid) {
+        SendError(res, "Введите корректный userid")
+        return;
+    }
+
+    const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
+    if (users.length === 0) {
+        SendError(res, "Такого пользователя не существует.")
+        return;
+    }
+    await DBRequest(`UPDATE \`users\` SET \`blocked\` = 1 WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`).then(() => {
+        SendNotification(res, "Пользователь заблокирован")
+    });
+});
+
+router.unlock('/', async (req, res, next) => {
+    if (!req.query.userid) {
+        SendError(res, "Введите корректный userid")
+        return;
+    }
+
+    const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
+    if (users.length === 0) {
+        SendError(res, "Такого пользователя не существует.")
+        return;
+    }
+    await DBRequest(`UPDATE \`users\` SET \`blocked\` = 0 WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`).then(() => {
+        SendNotification(res, "Пользователь разблокирован")
+    });
 });
 
 module.exports = router;
