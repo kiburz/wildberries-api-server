@@ -35,12 +35,12 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    if (!req.query.name || !req.query.api_key) {
+    if (!req.query.name || !req.query.apikey) {
         SendError(res, "Введите корректный username и api_key")
         return;
     }
 
-    await DBRequest(`INSERT INTO \`users\` (\`name\`, \`api_key\`) VALUES ('${req.query.name}', '${req.query.api_key}')`).then(() => {
+    await DBRequest(`INSERT INTO \`users\` (\`name\`, \`api_key\`) VALUES ('${req.query.name}', '${req.query.apikey}')`).then(() => {
         SendNotification(res, "Пользователь создан")
     });
 });
