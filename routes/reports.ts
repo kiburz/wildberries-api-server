@@ -64,7 +64,7 @@ router.post('/', async (req, res, next) => {
     }
 
     const cluster = JSON.parse(response as string)[0]
-    await DBRequest("DROP TABLE `reports`")
+    await DBRequest("TRUNCATE TABLE `reports`")
     for (let x = 0; x < cluster.length; x++) {
         await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[x].userid}, '${JSON.stringify(cluster)}')`)
     }
