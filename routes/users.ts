@@ -3,7 +3,7 @@ import mysql from 'mysql';
 
 const router = express.Router();
 const connection = mysql.createConnection({
-    "host"     : '127.0. 0.1',
+    "host"     : '127.0.0.1',
     "user"     : 'root',
     "password" : 'dk8J9jNT',
     "database" : 'wildberries'
@@ -18,7 +18,7 @@ async function DBRequest(request: string): Promise<string | void> {
     })
 }
 
-router.post('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     res.send(await DBRequest("SELECT * FROM `users`"));
 });
 
