@@ -1,7 +1,6 @@
 import express from "express";
 import mysql from 'mysql';
 import request from 'request';
-import test from "node:test";
 
 const router = express.Router();
 const connection = mysql.createConnection({
@@ -64,8 +63,7 @@ router.post('/', async (req, res, next) => {
         return;
     }
 
-    const testArray = ['value1', 'value2', { tag: "test" }]
-    await DBRequest(`INSERT INTO \`reports\` (\`body\`, \`userid\`) VALUES ('${JSON.stringify(testArray)}', ${users.userid}`).then(() => {
+    await DBRequest(`INSERT INTO \`reports\` (\`body\`, \`userid\`) VALUES ('${JSON.stringify(response)}', ${users[0].userid}`).then(() => {
         res.send({
             notification: "Отчет добавлен в базу данных",
             userid: users.userid,
