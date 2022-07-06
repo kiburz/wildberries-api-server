@@ -18,7 +18,7 @@ async function DBRequest(request: string): Promise<string | void> {
     })
 }
 
-router.get('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     res.send(await DBRequest("SELECT * FROM `users`"));
 });
 
