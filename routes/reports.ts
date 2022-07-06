@@ -45,7 +45,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    await DBRequest("TRUNCATE TABLE `reports`")
+    // await DBRequest("TRUNCATE TABLE `reports`")
     if (!req.query.api_key) {
         SendError(res,"Введите корректный api_key")
         return;
