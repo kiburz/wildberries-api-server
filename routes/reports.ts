@@ -64,14 +64,15 @@ router.post('/', async (req, res, next) => {
     }
 
     const cluster = JSON.parse(response as string)[0]
-    console.log(cluster)
-    await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(cluster)}')`).then(() => {
-        res.send({
-            notification: "Отчет добавлен в базу данных",
-            userid: users.userid,
-            body: response
-        })
-    });
+    await DBRequest("DROP TABLE `reports`")
+    for (let x = 0; x < cluster.length; x++) {
+        await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[x].userid}, '${JSON.stringify(cluster)}')`)
+    }
+    res.send({
+        notification: "Отчет добавлен в базу данных",
+        userid: users.userid,
+        body: response
+    })
 });
 
 module.exports = router;
