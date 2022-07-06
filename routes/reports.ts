@@ -63,7 +63,7 @@ router.post('/', async (req, res, next) => {
         return;
     }
 
-    await DBRequest(`INSERT INTO \`reports\` (\`body\`, \`userid\`) VALUES ('${response}', ${users.userid}`).then(() => {
+    await DBRequest(`INSERT INTO \`reports\` (\`body\`, \`userid\`) VALUES (${response}, ${users.userid}`).then(() => {
         res.send({
             notification: "Отчет добавлен в базу данных",
             userid: users.userid,
