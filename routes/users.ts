@@ -26,7 +26,7 @@ router.get('/', async (req, res, next) => {
     res.send(await DBRequest("SELECT * FROM `users`"));
 });
 
-router.get('/deleteUser', async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
     if (!req.query.userid) {
         SendError(res, "Введите корректный userid")
         return;
