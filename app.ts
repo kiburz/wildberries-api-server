@@ -9,7 +9,6 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
-// TODO: Добавить подключение к MySQL (phpMyAdmin можно воспользовать на beget)
 
 app.use(logger('dev'));
 app.use(express.json());
