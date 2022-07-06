@@ -2,8 +2,8 @@ import express from "express";
 const router = express.Router();
 
 router.post('/', function(req, res, next) {
-    const timeData = req.query.timeData
-    const timeType = req.query.timeType
+    const timeData = req.query.timeData ? parseInt(req.query.timeData as string) : 1
+    const timeType = parseInt(req.query.timeType as string)
 
     // TODO: Добавить подключенную в app.ts базу данных и менять там конфигурацию
 
