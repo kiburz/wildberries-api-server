@@ -66,7 +66,7 @@ router.post('/', async (req, res, next) => {
 
     const cluster = JSON.parse(response as string)
     for (let x = 0; x < cluster.length; x++) {
-        if (x === 823 || x === 966) continue;
+        if (x === 823 || x === 966 || x === 967) console.log(JSON.stringify(cluster[x])); continue;
         console.log(x)
         await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(cluster[x])}')`)
     }
