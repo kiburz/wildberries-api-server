@@ -64,8 +64,9 @@ router.post('/', async (req, res, next) => {
         return;
     }
 
-    for await (const element of response) {
-        await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(element)}')`)
+    const cluster = JSON.parse(response as string)
+    for (let x = 0; x < cluster.length; x++) {
+        await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(cluster[x])}')`)
     }
     res.send({
         notification: "Отчет добавлен в базу данных",
