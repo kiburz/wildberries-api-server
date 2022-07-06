@@ -55,7 +55,7 @@ router.post('/', async (req, res, next) => {
     {
         'method': 'GET',
         'url': `https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key=${req.query.api_key}&dateFrom=2020-06-01&dateTo=${normalDate}&limit=100000&rrdid=0`,
-    }) as any[]
+    }) as any
 
     const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`api_key\` = '${req.query.api_key}'`) as any
     if (users.length === 0) {
@@ -63,7 +63,7 @@ router.post('/', async (req, res, next) => {
         return;
     }
 
-    const cluster = response[0]
+    const cluster = JSON.parse(response as string)[0]
     console.log(cluster)
     await DBRequest(`INSERT INTO \`reports\` ( \`userid\`, \`body\`) VALUES (${users[0].userid}, '${cluster}')`).then(() => {
         res.send({
