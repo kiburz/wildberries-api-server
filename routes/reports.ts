@@ -46,7 +46,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     if (!req.query.api_key) {
-        SendError(req,"Введите корректный api_key")
+        SendError(res,"Введите корректный api_key")
         return;
     }
     const date = new Date()
