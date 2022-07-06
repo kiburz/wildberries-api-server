@@ -37,5 +37,5 @@ GET http://89.223.65.34:3000/reports
 
 Обновление отчетов в БД
 ```
-POST http://89.223.65.34:3000/reports?api_key={ID ПОЛЬЗОВАТЕЛЯ}
+POST http://89.223.65.34:3000/reports?api_key={API Ключ}
 ```
