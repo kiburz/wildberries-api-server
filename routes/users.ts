@@ -54,11 +54,11 @@ router.put('/', async (req, res, next) => {
             return;
         }
         if (req.query.name)
-            await DBRequest(`UPDATE \`users\` SET \`name\` = ${req.query.name} WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE \`users\` SET \`name\` = '${req.query.name}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
         if (req.query.surname)
-            await DBRequest(`UPDATE \`users\` SET \`surname\` = ${req.query.surname} WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE \`users\` SET \`surname\` = '${req.query.surname}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
         if (req.query.api_key)
-            await DBRequest(`UPDATE \`users\` SET \`api_key\` = ${req.query.api_key} WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE \`users\` SET \`api_key\` = '${req.query.api_key}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
 
     } else {
         SendError(res, "Введите корректные данные для изменения пользователя")
