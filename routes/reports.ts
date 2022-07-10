@@ -49,6 +49,7 @@ router.get('/', async (req, res, next) => {
         for (const report of reports) {
             const body = JSON.parse(report.body)
             const reportDate = new Date(body.rr_dt)
+            console.log(reportDate)
             if (reportDate > dateFrom && reportDate < dateTo)
                 results.push(report)
         }
