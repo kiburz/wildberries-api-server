@@ -91,6 +91,9 @@ router.post('/', async (req, res, next) => {
                 await DBRequest(`UPDATE \`reports\` SET \`body\` = '${JSON.stringify(reports[x])}' WHERE  \`reports\`.\`reportid\` = ${currentReportId}`)
             } else if (y + 1 === currentReports.length) {
                 await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(reports[x])}')`)
+                .catch((error) => {
+                    console.log(error)
+                })
             }
         }
     }
