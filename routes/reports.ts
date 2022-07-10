@@ -84,6 +84,7 @@ router.post('/', async (req, res, next) => {
     const currentReports = await DBRequest("SELECT * FROM `reports`")
     for (let x = 0; x < reports.length; x++) {
         const newReportId = JSON.parse(reports[x]).rid
+        console.log((reports))
         for (let y = 0; y < currentReports.length; y++) {
             const currentReportId = JSON.parse(currentReports[y].body).rid
             console.log(newReportId + " " + currentReportId)
