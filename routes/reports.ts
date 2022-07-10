@@ -68,7 +68,7 @@ router.post('/', async (req, res, next) => {
     const response = await HTTPRequest(
     {
         'method': 'GET',
-        'url': `https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key=${req.query.api_key}&dateFrom=2020-06-01&dateTo=${normalDate}&limit=100000&rrdid=0`,
+        'url': `https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key=${req.query.api_key}&dateFrom=2018-06-01&dateTo=${normalDate}&limit=100000&rrdid=0`,
         'headers': {
             'Access-Control-Allow-Private-Network': 'true'
         }
@@ -80,19 +80,21 @@ router.post('/', async (req, res, next) => {
         return;
     }
 
-    const cluster = JSON.parse(response as string)
-    await DBRequest("TRUNCATE TABLE `reports`") // Очистка таблицы
-    for (let x = 0; x < cluster.length; x++) {
-        await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(cluster[x])}')`)
-            .catch((error) => {
-                console.log(error)
-            })
+    const reports = JSON.parse(response as string)
+    const currentReports = await DBRequest("SELECT * FROM `reports`")
+    for (let x = 0; x < reports.length; x++) {
+        const newReportId = JSON.parse(reports[x]).rid
+        for (let y = 0; y < currentReports.length; y++) {
+            const currentReportId = JSON.parse(currentReports[y].body).rid
+            console.log(newReportId + " " + currentReportId)
+            if (newReportId === currentReportId) {
+                await DBRequest(`UPDATE \`reports\` SET \`body\` = '${JSON.stringify(reports[x])}' WHERE  \`reports\`.\`reportid\` = ${currentReportId}`)
+            } else if (y + 1 === currentReports.length) {
+                await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(reports[x])}')`)
+            }
+        }
     }
-    res.send({
-        notification: "Отчет добавлен в базу данных",
-        userid: users.userid,
-        body: response
-    })
+    SendNotification(res, "Отчеты обновлены")
 });
 
 module.exports = router;
