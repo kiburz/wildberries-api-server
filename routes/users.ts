@@ -60,6 +60,7 @@ router.put('/', async (req, res, next) => {
         if (req.query.api_key)
             await DBRequest(`UPDATE \`users\` SET \`api_key\` = '${req.query.api_key}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
 
+        SendNotification(res, "Пользователь обновлен.")
     } else {
         SendError(res, "Введите корректные данные для изменения пользователя")
         return;

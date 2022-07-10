@@ -19,7 +19,7 @@ async function DBRequest(request: string): Promise<any | void> {
     })
 }
 
-async function HTTPRequest(options: any) {
+async function HTTPRequest(options: any): Promise<any | void> {
     return new Promise((resolve, reject) => {
         request(options, function (error: any, response: any) {
             if (error) reject(error)
@@ -41,11 +41,24 @@ function SendNotification(res: any, NotificationMessage: string): void {
 }
 
 router.get('/', async (req, res, next) => {
-    res.send(await DBRequest("SELECT * FROM `reports`"));
+    const reports = await DBRequest("SELECT * FROM `reports`");
+    if (req.query.dateFrom && req.query.dateTo) {
+        let results = []
+        const dateFrom = new Date(req.query.dateFrom as string)
+        const dateTo = new Date(req.query.dateTo as string)
+        for (const report of reports) {
+            const body = JSON.parse(report.body)
+            const reportDate = new Date(body.rr_dt)
+            if (reportDate > dateFrom && reportDate < dateTo)
+                results.push(report)
+        }
+        res.send(results);
+    } else {
+        res.send(reports);
+    }
 });
 
 router.post('/', async (req, res, next) => {
-    await DBRequest("TRUNCATE TABLE `reports`")
     if (!req.query.api_key) {
         SendError(res,"Введите корректный api_key")
         return;
@@ -68,6 +81,7 @@ router.post('/', async (req, res, next) => {
     }
 
     const cluster = JSON.parse(response as string)
+    await DBRequest("TRUNCATE TABLE `reports`") // Очистка таблицы
     for (let x = 0; x < cluster.length; x++) {
         await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(cluster[x])}')`)
             .catch((error) => {
