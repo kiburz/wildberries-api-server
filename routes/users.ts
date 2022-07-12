@@ -47,7 +47,7 @@ router.post('/', async (req, res, next) => {
 
     const options = {
         'method': 'POST',
-        'url': 'http://89.223.65.34:3000/reports?api_key=ZTcyMWYxNjUtYTg4Ny00ZmU1LTliZTItZGI5ZjA4OTg1MGIy',
+        'url': `http://89.223.65.34:3000/reports?api_key=${req.query.api_key}`,
         'headers': {
         }
     };
