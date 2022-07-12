@@ -63,6 +63,7 @@ router.post('/', async (req, res, next) => {
         SendError(res,"Введите корректный api_key")
         return;
     }
+    SendNotification(res, "Отчеты обновлены")
     const date = new Date()
     const normalDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
     const response = await HTTPRequest(
@@ -97,7 +98,6 @@ router.post('/', async (req, res, next) => {
             }
         }
     }
-    SendNotification(res, "Отчеты обновлены")
 });
 
 module.exports = router;

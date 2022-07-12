@@ -1,5 +1,6 @@
 import express from "express";
 import mysql from 'mysql';
+import request from "request";
 
 const router = express.Router();
 const connection = mysql.createConnection({
@@ -42,6 +43,16 @@ router.post('/', async (req, res, next) => {
 
     await DBRequest(`INSERT INTO \`users\` (\`name\`, \`api_key\`, \`surname\`) VALUES ('${req.query.name}', '${req.query.api_key}', '${req.query.surname}')`).then(() => {
         SendNotification(res, "Пользователь создан")
+    });
+
+    const options = {
+        'method': 'POST',
+        'url': 'http://89.223.65.34:3000/reports?api_key=ZTcyMWYxNjUtYTg4Ny00ZmU1LTliZTItZGI5ZjA4OTg1MGIy',
+        'headers': {
+        }
+    };
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
     });
 });
 
