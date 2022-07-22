@@ -42,7 +42,7 @@ function SendNotification(res: any, NotificationMessage: string): void {
 
 router.get('/', async (req, res, next) => {
     const reports = await DBRequest("SELECT * FROM `reports`");
-    let result
+    let result = []
     if (req.query.dateFrom && req.query.dateTo) {
         let results = []
         const dateFrom = new Date(req.query.dateFrom as string)
@@ -58,10 +58,8 @@ router.get('/', async (req, res, next) => {
         result = reports
     }
     if (req.query.userid) {
-        for (const resultElement of result) {
-            console.log(resultElement.userid + " " + req.query.userid)
-        }
         result = (result as any[]).filter(element => element.userid === req.query.userid)
+        console.log(result)
     }
     res.send(result)
 });
