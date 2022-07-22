@@ -58,6 +58,9 @@ router.get('/', async (req, res, next) => {
         result = reports
     }
     if (req.query.userid) {
+        for (const resultElement of result) {
+            console.log(resultElement.userid + " " + req.query.userid)
+        }
         result = (result as any[]).filter(element => element.userid === req.query.userid)
     }
     res.send(result)
