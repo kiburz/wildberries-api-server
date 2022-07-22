@@ -58,8 +58,7 @@ router.get('/', async (req, res, next) => {
         result = reports
     }
     if (req.query.userid) {
-        console.log(result)
-        result = (result as any[]).filter(element => element.userd === req.query.userid)
+        result = (result as any[]).filter(element => element.userid === req.query.userid)
     }
     res.send(result)
 });
