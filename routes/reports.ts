@@ -41,9 +41,9 @@ function SendNotification(res: any, NotificationMessage: string): void {
 }
 
 router.get('/', async (req, res, next) => {
-    let reports = await DBRequest("SELECT * FROM `reports`");
+    let reports = await DBRequest("SELECT * FROM reports");
     if (req.query.userid) {
-        reports = await DBRequest("SELECT * FROM `reports` WHERE userid = ${req.query.userid}");
+        reports = await DBRequest(`SELECT * FROM reports WHERE userid = ${req.query.userid}`);
     }
     let result = []
     if (req.query.dateFrom && req.query.dateTo) {
