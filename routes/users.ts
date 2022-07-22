@@ -95,7 +95,7 @@ router.delete('/', async (req, res, next) => {
     });
 });
 
-router.lock('/', async (req, res, next) => {
+router.put('/lock', async (req, res, next) => {
     if (!req.query.userid) {
         SendError(res, "Введите корректный userid")
         return;
@@ -111,7 +111,7 @@ router.lock('/', async (req, res, next) => {
     });
 });
 
-router.unlock('/', async (req, res, next) => {
+router.put('/unlock', async (req, res, next) => {
     if (!req.query.userid) {
         SendError(res, "Введите корректный userid")
         return;
