@@ -36,12 +36,12 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    if (!req.query.name || !req.query.api_key || !req.query.surname) {
+    if (!req.query.name || !req.query.api_key || !req.query.surname || !req.query.apikey2 || !req.query.wbtoken || !req.query.supplierid || !req.query.tokencard) {
         SendError(res, "Введите корректный name, surname и api_key")
         return;
     }
 
-    await DBRequest(`INSERT INTO \`users\` (\`name\`, \`api_key\`, \`surname\`) VALUES ('${req.query.name}', '${req.query.api_key}', '${req.query.surname}')`).then(() => {
+    await DBRequest(`INSERT INTO users (name, api_key, surname, apikey2, wbtoken, supplierid, tokencard) VALUES ('${req.query.name}', '${req.query.api_key}', '${req.query.surname}', '${req.query.apikey2}', '${req.query.wbtoken}', '${req.query.supplierid}', ${req.query.tokencard})`).then(() => {
         SendNotification(res, "Пользователь создан")
     });
 
@@ -57,7 +57,7 @@ router.post('/', async (req, res, next) => {
 });
 
 router.put('/', async (req, res, next) => {
-    if (req.query.userid && (req.query.name || req.query.surname || req.query.api_key)) {
+    if (req.query.userid && (req.query.name || req.query.api_key || req.query.surname || req.query.apikey2 || req.query.wbtoken || req.query.supplierid || req.query.tokencard)) {
         console.log(req.query)
         const user = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
         if (user.length === 0) {
@@ -68,8 +68,14 @@ router.put('/', async (req, res, next) => {
             await DBRequest(`UPDATE \`users\` SET \`name\` = '${req.query.name}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
         if (req.query.surname)
             await DBRequest(`UPDATE \`users\` SET \`surname\` = '${req.query.surname}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
-        if (req.query.api_key)
+        if (req.query.apikey2)
             await DBRequest(`UPDATE \`users\` SET \`api_key\` = '${req.query.api_key}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+        if (req.query.wbtoken)
+            await DBRequest(`UPDATE \`users\` SET \`wbtoken\` = '${req.query.wbtoken}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+        if (req.query.supplierid)
+            await DBRequest(`UPDATE \`users\` SET \`supplierid\` = '${req.query.supplierid}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+        if (req.query.tokencard)
+            await DBRequest(`UPDATE \`users\` SET \`tokencard\` = '${req.query.tokencard}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
 
         SendNotification(res, "Пользователь обновлен.")
     } else {
