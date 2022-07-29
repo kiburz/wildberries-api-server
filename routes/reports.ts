@@ -101,6 +101,9 @@ router.post('/', async (req, res, next) => {
                 })
             }
         }
+        if (currentReports.length === 0) {
+            await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(reports[x])}')`)
+        }
     }
 });
 
