@@ -68,7 +68,6 @@ router.post('/', async (req, res, next) => {
         SendError(res,"Введите корректный api_key")
         return;
     }
-    SendNotification(res, "Отчеты обновлены")
     const date = new Date()
     const normalDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
     const response = await HTTPRequest(
@@ -85,7 +84,7 @@ router.post('/', async (req, res, next) => {
         SendError(res, "Пользователя с таким api_key не существует")
         return;
     }
-
+    SendNotification(res, "Отчеты обновлены")
     const reports = JSON.parse(response as string)
     const currentReports = await DBRequest("SELECT * FROM `reports`")
     for (let x = 0; x < reports.length; x++) {
