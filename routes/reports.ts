@@ -86,7 +86,7 @@ router.post('/', async (req, res, next) => {
     }
     SendNotification(res, "Отчеты обновлены")
     const reports = JSON.parse(response as string)
-    const currentReports = await DBRequest("SELECT * FROM `reports`")
+    const currentReports = await DBRequest("SELECT * FROM `reports` WHERE userid = ${users[0].userid}") as any[]
     for (let x = 0; x < reports.length; x++) {
         const newReportId = reports[x].rid
         for (let y = 0; y < currentReports.length; y++) {
@@ -101,7 +101,7 @@ router.post('/', async (req, res, next) => {
                 })
             }
         }
-        if (currentReports.length === 0) {
+        if (currentReports.filter(report => report.userid = users[0].userid).length === 0) {
             await DBRequest(`INSERT INTO \`reports\` (\`userid\`, \`body\`) VALUES (${users[0].userid}, '${JSON.stringify(reports[x])}')`)
         }
     }
