@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
     const timeType = parseInt(req.query.timeType as string)
     const value = timeType / timeData
 
-    await DBRequest(`UPDATE \`config\` SET \`value\`=${value} WHERE \`config\`.\`configid\` = 1;`)
+    await DBRequest(`UPDATE config SET value=${value} WHERE config.configid = 1;`)
 
     res.send({
         value: value

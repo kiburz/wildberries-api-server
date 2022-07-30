@@ -59,23 +59,23 @@ router.post('/', async (req, res, next) => {
 router.put('/', async (req, res, next) => {
     if (req.query.userid && (req.query.name || req.query.api_key || req.query.surname || req.query.apikey2 || req.query.wbtoken || req.query.supplierid || req.query.tokencard)) {
         console.log(req.query)
-        const user = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
+        const user = await DBRequest(`SELECT * FROM users WHERE users.userid = ${parseInt(req.query.userid as string)}`) as string
         if (user.length === 0) {
             SendError(res, "Такого пользователя не существует.")
             return;
         }
         if (req.query.name)
-            await DBRequest(`UPDATE \`users\` SET \`name\` = '${req.query.name}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE users SET name = '${req.query.name}' WHERE  users.userid = ${parseInt(req.query.userid as string)}`)
         if (req.query.surname)
-            await DBRequest(`UPDATE \`users\` SET \`surname\` = '${req.query.surname}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE users SET surname = '${req.query.surname}' WHERE  users.userid = ${parseInt(req.query.userid as string)}`)
         if (req.query.apikey2)
-            await DBRequest(`UPDATE \`users\` SET \`api_key\` = '${req.query.api_key}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE users SET api_key = '${req.query.api_key}' WHERE  users.userid = ${parseInt(req.query.userid as string)}`)
         if (req.query.wbtoken)
-            await DBRequest(`UPDATE \`users\` SET \`wbtoken\` = '${req.query.wbtoken}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE users SET wbtoken = '${req.query.wbtoken}' WHERE  users.userid = ${parseInt(req.query.userid as string)}`)
         if (req.query.supplierid)
-            await DBRequest(`UPDATE \`users\` SET \`supplierid\` = '${req.query.supplierid}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE users SET supplierid = '${req.query.supplierid}' WHERE  users.userid = ${parseInt(req.query.userid as string)}`)
         if (req.query.tokencard)
-            await DBRequest(`UPDATE \`users\` SET \`tokencard\` = '${req.query.tokencard}' WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
+            await DBRequest(`UPDATE users SET tokencard = '${req.query.tokencard}' WHERE  users.userid = ${parseInt(req.query.userid as string)}`)
 
         SendNotification(res, "Пользователь обновлен.")
     } else {
@@ -90,13 +90,13 @@ router.delete('/', async (req, res, next) => {
         return;
     }
 
-    const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
+    const users = await DBRequest(`SELECT * FROM users WHERE users.userid = ${parseInt(req.query.userid as string)}`) as string
     if (users.length === 0) {
         SendError(res, "Такого пользователя не существует.")
         return;
     }
-    await DBRequest(`DELETE FROM \`reports\` WHERE \`reports\`.\`userid\` = ${parseInt(req.query.userid as string)}`)
-    await DBRequest(`DELETE FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`).then(() => {
+    await DBRequest(`DELETE FROM reports WHERE reports.userid = ${parseInt(req.query.userid as string)}`)
+    await DBRequest(`DELETE FROM users WHERE users.userid = ${parseInt(req.query.userid as string)}`).then(() => {
         SendNotification(res, "Пользователь удален")
     });
 });
@@ -107,12 +107,12 @@ router.put('/lock', async (req, res, next) => {
         return;
     }
 
-    const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
+    const users = await DBRequest(`SELECT * FROM users WHERE users.userid = ${parseInt(req.query.userid as string)}`) as string
     if (users.length === 0) {
         SendError(res, "Такого пользователя не существует.")
         return;
     }
-    await DBRequest(`UPDATE \`users\` SET \`blocked\` = 1 WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`).then(() => {
+    await DBRequest(`UPDATE users SET blocked = 1 WHERE  users.userid = ${parseInt(req.query.userid as string)}`).then(() => {
         SendNotification(res, "Пользователь заблокирован")
     });
 });
@@ -123,12 +123,12 @@ router.put('/unlock', async (req, res, next) => {
         return;
     }
 
-    const users = await DBRequest(`SELECT * FROM \`users\` WHERE \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`) as string
+    const users = await DBRequest(`SELECT * FROM users WHERE users.userid = ${parseInt(req.query.userid as string)}`) as string
     if (users.length === 0) {
         SendError(res, "Такого пользователя не существует.")
         return;
     }
-    await DBRequest(`UPDATE \`users\` SET \`blocked\` = 0 WHERE  \`users\`.\`userid\` = ${parseInt(req.query.userid as string)}`).then(() => {
+    await DBRequest(`UPDATE users SET blocked = 0 WHERE  users.userid = ${parseInt(req.query.userid as string)}`).then(() => {
         SendNotification(res, "Пользователь разблокирован")
     });
 });
