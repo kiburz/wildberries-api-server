@@ -86,11 +86,21 @@ router.post('/', async (req, res, next) => {
     }
     SendNotification(res, "Отчеты обновлены")
     const reports = JSON.parse(response as string)
-    const currentReports = await DBRequest(`SELECT * FROM reports WHERE userid = ${users[0].userid}`) as any[]
     for (const report of reports) {
         await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${report.rid}, ${users[0].userid}, '${JSON.stringify(report)}')`)
-            .catch((error) => {
+            .catch(async (error) => {
                 console.log(error)
+                const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${report.rid}`) as any[]
+                if (!currentReport[0])
+                    return
+
+                console.log(currentReport[0].body)
+                if (JSON.stringify(currentReport[0].body) !== JSON.stringify(report)) {
+                    await DBRequest(`UPDATE reports SET body = '${JSON.stringify(report)}' WHERE reportid = ${report.rid}`)
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
             })
     }
     // for (let x = 0; x < reports.length; x++) {
