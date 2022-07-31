@@ -64,16 +64,14 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    if (!req.query.api_key) {
-        SendError(res,"Введите корректный api_key")
+    if (!req.query.api_key && !req.query.dateFrom && !req.query.dateTo) {
+        SendError(res,"Введите корректный api_key, dateFrom, dateTO")
         return;
     }
-    const date = new Date()
-    const normalDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
     const response = await HTTPRequest(
     {
         'method': 'GET',
-        'url': `https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key=${req.query.api_key}&dateFrom=2018-06-01&dateTo=${normalDate}&limit=100000&rrdid=0`,
+        'url': `https://suppliers-stats.wildberries.ru/api/v1/supplier/reportDetailByPeriod?key=${req.query.api_key}&dateFrom=${req.query.dateFrom}&dateTo=${req.query.dateTo}&limit=100000&rrdid=0`,
         'headers': {
             'Access-Control-Allow-Private-Network': 'true'
         }
