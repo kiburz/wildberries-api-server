@@ -86,6 +86,7 @@ router.post('/', async (req, res, next) => {
     }
     SendNotification(res, "Отчеты обновлены")
     const reports = JSON.parse(response as string)
+    console.log(reports)
     for (const report of reports) {
         await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${report.realizationreport_id}, ${users[0].userid}, '${JSON.stringify(report)}')`)
             .catch(async (error) => {
