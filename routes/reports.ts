@@ -37,8 +37,6 @@ function handleDisconnect() {
     });
 }
 
-handleDisconnect();
-
 async function HTTPRequest(options: any): Promise<any | void> {
     return new Promise((resolve, reject) => {
         request(options, function (error: any, response: any) {
