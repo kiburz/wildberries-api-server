@@ -84,7 +84,6 @@ router.post('/', async (req, res, next) => {
     }
     SendNotification(res, "Отчеты обновлены")
     const reports = JSON.parse(response as string)
-    console.log(reports)
     for (let x = 0; x < reports.length; x++) {
         const parsedReport = {
             realizationreport_id: reports[x].realizationreport_id,
