@@ -138,13 +138,13 @@ router.post('/', async (req, res, next) => {
         const stringifiedReport = JSON.stringify(parsedReport)
         await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${reports[x].rrd_id}, ${users[0].userid}, '${stringifiedReport}')`)
             .catch(async (error) => {
-                console.log(error)
                 // console.log(x + " " + reports[x].rrd_id)
                 const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${reports[x].rrd_id}`) as any[]
                 if (!currentReport[0])
                     return
 
                 if (JSON.stringify(currentReport[0].body) !== JSON.stringify(reports[x])) {
+                    console.log("Обновление отчета")
                     await DBRequest(`UPDATE reports SET body = '${stringifiedReport}' WHERE reportid = ${reports[x].rrd_id}`)
                         .catch((error) => {
                             console.log(error)
