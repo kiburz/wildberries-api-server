@@ -89,6 +89,7 @@ router.post('/', async (req, res, next) => {
         await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${reports[x].rrd_id}, ${users[0].userid}, '${JSON.stringify(reports[x])}')`)
             .catch(async (error) => {
                 console.log(x + " " + reports[x].rrd_id)
+                console.log(error)
                 const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${reports[x].rrd_id}`) as any[]
                 if (!currentReport[0])
                     return
