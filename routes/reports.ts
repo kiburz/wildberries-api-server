@@ -15,6 +15,7 @@ async function DBRequest(request: string): Promise<any | void> {
         connection.query(request, function (error, results, fields) {
             if (error) reject(error)
             resolve(results)
+            connection.query("SET SESSION wait_timeout = 604800")
         });
     })
 }
