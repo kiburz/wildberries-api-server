@@ -128,7 +128,7 @@ router.post('/', async (req, res, next) => {
             ppvz_office_id: reports[x].ppvz_office_id,
             ppvz_office_name: reports[x].ppvz_office_name,
             ppvz_supplier_id: reports[x].ppvz_supplier_id,
-            ppvz_supplier_name: reports[x].ppvz_supplier_name.replace('\\"', '').replace('\\"', ''),
+            // ppvz_supplier_name: reports[x].ppvz_supplier_name.replace('\\"', '').replace('\\"', ''),
             ppvz_inn: reports[x].ppvz_inn,
             declaration_number: reports[x].declaration_number,
             sticker_id: reports[x].sticker_id,
