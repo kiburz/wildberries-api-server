@@ -85,19 +85,18 @@ router.post('/', async (req, res, next) => {
     SendNotification(res, "Отчеты обновлены")
     const reports = JSON.parse(response as string)
     console.log(reports)
-    for (const report of reports) {
-        console.log(JSON.stringify(report))
-        await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${report.rrd_id}, ${users[0].userid}, '${JSON.stringify(report)}')`)
+    for (let x = 0; x < reports.length; x++) {
+        console.log(JSON.stringify(reports[x]))
+        await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${reports[x].rrd_id}, ${users[0].userid}, '${JSON.stringify(reports[x])}')`)
             .catch(async (error) => {
-                console.log(error.message)
-                console.log(report.rrd_id)
-                const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${report.rrd_id}`) as any[]
+                console.log(x + " " + reports[x].rrd_id)
+                const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${reports[x].rrd_id}`) as any[]
                 if (!currentReport[0])
                     return
 
                 console.log(currentReport[0].body)
-                if (JSON.stringify(currentReport[0].body) !== JSON.stringify(report)) {
-                    await DBRequest(`UPDATE reports SET body = '${JSON.stringify(report)}' WHERE reportid = ${report.rrd_id}`)
+                if (JSON.stringify(currentReport[0].body) !== JSON.stringify(reports[x])) {
+                    await DBRequest(`UPDATE reports SET body = '${JSON.stringify(reports[x])}' WHERE reportid = ${reports[x].rrd_id}`)
                         .catch((error) => {
                             console.log(error)
                         })
