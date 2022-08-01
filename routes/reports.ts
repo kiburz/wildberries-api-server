@@ -86,10 +86,11 @@ router.post('/', async (req, res, next) => {
     const reports = JSON.parse(response as string)
     console.log(reports)
     for (let x = 0; x < reports.length; x++) {
-        await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${reports[x].rrd_id}, ${users[0].userid}, '${JSON.stringify(reports[x])}')`)
+        const stringifiedReport = JSON.stringify(reports[x])
+        console.log(stringifiedReport)
+        await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${reports[x].rrd_id}, ${users[0].userid}, '${stringifiedReport}')`)
             .catch(async (error) => {
                 console.log(x + " " + reports[x].rrd_id)
-                console.log(error)
                 const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${reports[x].rrd_id}`) as any[]
                 if (!currentReport[0])
                     return
