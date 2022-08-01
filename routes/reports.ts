@@ -3,7 +3,7 @@ import mysql from 'mysql';
 import request from 'request';
 
 const router = express.Router();
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     "host"     : '127.0.0.1',
     "user"     : 'root',
     "password" : 'dk8J9jNT',
@@ -12,30 +12,15 @@ const connection = mysql.createConnection({
 
 async function DBRequest(request: string): Promise<any | void> {
     return new Promise((resolve, reject) => {
-        connection.query(request, function (error, results, fields) {
-            if (error) reject(error)
-            resolve(results)
-            connection.query("SET SESSION wait_timeout = 604800")
-        });
+        pool.getConnection((err, connection) => {
+            connection.query(request, function (error, results, fields) {
+                if (error) reject(error)
+                resolve(results)
+                connection.release()
+                connection.query("SET SESSION wait_timeout = 604800")
+            });
+        })
     })
-}
-
-function handleDisconnect() {
-    connection.connect(function(err) {
-        if(err) {
-            console.log('error when connecting to db:', err);
-            setTimeout(handleDisconnect, 2000);
-        }
-    });
-
-    connection.on('error', function(err) {
-        console.log('db error', err);
-        if(err.code === 'PROTOCOL_CONNECTION_LOST') {
-            handleDisconnect();
-        } else {
-            throw err;
-        }
-    });
 }
 
 async function HTTPRequest(options: any): Promise<any | void> {
