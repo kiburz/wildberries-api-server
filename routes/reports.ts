@@ -88,7 +88,8 @@ router.post('/', async (req, res, next) => {
     for (const report of reports) {
         await DBRequest(`INSERT INTO reports (reportid, userid, body) VALUES (${report.rrd_id}, ${users[0].userid}, '${JSON.stringify(report)}')`)
             .catch(async (error) => {
-                console.log(error)
+                console.log(error.message)
+                console.log(report.rrd_id)
                 const currentReport = await DBRequest(`SELECT * FROM reports WHERE reportid = ${report.rrd_id}`) as any[]
                 if (!currentReport[0])
                     return
@@ -102,24 +103,6 @@ router.post('/', async (req, res, next) => {
                 }
             })
     }
-    // for (let x = 0; x < reports.length; x++) {
-    //     const newReportId = reports[x].rid
-    //     for (let y = 0; y < currentReports.length; y++) {
-    //         const currentReportId = JSON.parse(currentReports[y].body).rid
-    //         console.log(newReportId + " " + currentReportId)
-    //         if (newReportId === currentReportId) {
-    //             await DBRequest(`UPDATE reports SET body = '${JSON.stringify(reports[x])}' WHERE  reports.reportid = ${currentReportId}`)
-    //         } else if (y + 1 === currentReports.length) {
-    //             await DBRequest(`INSERT INTO reports (userid, body) VALUES (${users[0].userid}, '${JSON.stringify(reports[x])}')`)
-    //             .catch((error) => {
-    //                 console.log(error)
-    //             })
-    //         }
-    //     }
-    //     if (currentReports.filter(report => report.userid = users[0].userid).length === 0) {
-    //         await DBRequest(`INSERT INTO reports (userid, body) VALUES (${users[0].userid}, '${JSON.stringify(reports[x])}')`)
-    //     }
-    // }
 });
 
 module.exports = router;
