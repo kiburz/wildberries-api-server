@@ -147,7 +147,7 @@ router.post('/', async (req, res, next) => {
                 if (!currentReport[0])
                     return
 
-                if (JSON.stringify(currentReport[0].body) !== JSON.stringify(reports[x])) {
+                if (currentReport[0].body !== JSON.stringify(reports[x])) {
                     console.log("Обновление отчета" + " " + x)
                     await DBRequest(`UPDATE reports SET body = '${stringifiedReport}' WHERE reportid = ${reports[x].rrd_id}`)
                         .catch((error) => {
