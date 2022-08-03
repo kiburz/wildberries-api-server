@@ -44,7 +44,7 @@ function SendNotification(res: any, NotificationMessage: string): void {
     })
 }
 
-export function Autoupdating() {
+export async function AutoUpdating() {
     setInterval(async () => {
             const date = new Date()
             const weekDay = date.getDay()
