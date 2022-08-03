@@ -79,8 +79,8 @@ async function AutoUpdating() {
                 'url': 'http://81.163.27.78/users'
             })
             console.log(users)
-            for (const user of users) {
-                console.log(users)
+            for (const user of JSON.parse(users)) {
+                console.log(user)
                 await HTTPRequest({
                     'method': 'POST',
                     'url': `http://81.163.27.78/reports/?api_key=${user.api_key}&dateFrom=${lastweekTextDate}&dateTo=${textDate}&limit=100000&rrdid=0`
