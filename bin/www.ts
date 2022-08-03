@@ -1,3 +1,5 @@
+import {Autoupdating} from "../routes/reports";
+
 const app = require('../app');
 const debug = require('debug')('wildberries-api:server');
 const http = require('http');
@@ -49,6 +51,7 @@ function onError(error: any) {
 }
 
 function onListening() {
+    Autoupdating()
     const address = server.address();
     const bind = typeof address === 'string'
         ? 'pipe ' + address
