@@ -62,6 +62,7 @@ function onError(error: any) {
 
 async function AutoUpdating() {
     console.log("Autoupdating")
+    await Update()
     setInterval(async () => {
             await Update()
         },
