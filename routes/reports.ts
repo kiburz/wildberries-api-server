@@ -49,6 +49,7 @@ setInterval(async () => {
     const weekDay = date.getDay()
     const textDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`
     const lastweekTextDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${(date.getDate()-7).toString().padStart(2, "0")}`
+    console.log(date)
     if (weekDay >= 1 && weekDay <= 3) {
         const users = await DBRequest("SELECT * FROM users") as any[]
         for (const user of users) {
