@@ -73,7 +73,10 @@ async function AutoUpdating() {
         const lastweekTextDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${(date.getDate() - 7).toString().padStart(2, "0")}`
         console.log(date)
         if (weekDay >= 1 && weekDay <= 3) {
-            const users = await HTTPRequest("http://81.163.27.78/users")
+            const users = await HTTPRequest({
+                'method': 'GET',
+                'url': 'http://81.163.27.78/users'
+            })
             console.log(users)
             for (const user of users) {
                 console.log(user.api_key)
