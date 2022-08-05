@@ -1,9 +1,20 @@
+import request from "request";
+
 const app = require('../app');
 const debug = require('debug')('wildberries-api:server');
 const http = require('http');
 
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+async function HTTPRequest(options: any): Promise<any | void> {
+    return new Promise((resolve, reject) => {
+        request(options, function (error: any, response: any) {
+            if (error) reject(error)
+            resolve(response.body)
+        })
+    })
+}
 
 const server = http.createServer(app);
 server.listen(port);
@@ -48,7 +59,39 @@ function onError(error: any) {
     }
 }
 
-function onListening() {
+
+async function AutoUpdating() {
+    console.log("Autoupdating")
+    await Update()
+    setInterval(async () => {
+            await Update()
+        },
+        1800000)
+    async function Update() {
+        const date = new Date()
+        const weekDay = date.getDay()
+        const textDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`
+        const lastweekTextDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${(date.getDate() - 7).toString().padStart(2, "0")}`
+        console.log(date)
+        if (weekDay >= 1 && weekDay <= 3) {
+            const users = await HTTPRequest({
+                'method': 'GET',
+                'url': 'http://81.163.27.78/users'
+            })
+            console.log(users)
+            for (const user of JSON.parse(users)) {
+                console.log(user)
+                await HTTPRequest({
+                    'method': 'POST',
+                    'url': `http://81.163.27.78/reports/?api_key=${user.api_key}&dateFrom=${lastweekTextDate}&dateTo=${textDate}&limit=100000&rrdid=0`
+                })
+            }
+        }
+    }
+}
+
+async function onListening() {
+    await AutoUpdating()
     const address = server.address();
     const bind = typeof address === 'string'
         ? 'pipe ' + address
