@@ -41,7 +41,7 @@ router.post('/', async (req, res, next) => {
         return;
     }
 
-    await DBRequest(`INSERT INTO users (name, api_key, idsheets, apikey2, wbtoken, supplierid, tokencard) VALUES ('${req.query.name}', '${req.query.api_key}', '${req.query.idsheets}', '${req.query.apikey2}', '${req.query.wbtoken}', '${req.query.supplierid}', ${req.query.tokencard})`).then(() => {
+    await DBRequest(`INSERT INTO users (name, api_key, idsheets, apikey2, wbtoken, supplierid, tokencard) VALUES ('${req.query.name}', '${req.query.api_key}', '${req.query.idsheets}'')`).then(() => {
         SendNotification(res, "Пользователь создан")
     });
 
